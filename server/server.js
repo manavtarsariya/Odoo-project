@@ -34,12 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/trips", tripRoutes);
-<<<<<<< HEAD
 app.use("/api/reports", reportRoutes);
-=======
-app.use("/api/service-logs", serviceLogRoutes);
-app.use("/api/finance", financeRoutes);
->>>>>>> 65707505c1ba42fe95ccf00090b3c2e418d0a040
 
 // Test route
 app.get("/", (req, res) => {
