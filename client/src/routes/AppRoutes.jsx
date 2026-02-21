@@ -8,6 +8,7 @@ import Loginpage from "../pages/Loginpage";
 import Vehiclepage from "../pages/Vehiclepage";
 import Driverpage from "../pages/Driverpage";
 import TripDispatchPage from "../pages/Tripdispatch";
+import Service from "../pages/Service";
 
 const AppRoutes = createBrowserRouter([
   
@@ -40,6 +41,10 @@ const AppRoutes = createBrowserRouter([
          {
         path: "/trips",
         element: <TripDispatchPage />,
+      },
+        {
+        path: "/maintenance",
+        element: <Service />,
       },
     ],
   },

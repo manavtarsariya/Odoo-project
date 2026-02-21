@@ -9,6 +9,8 @@ import authRoutes from "./routes/auth.routes.js";
 import vehicleRoutes from "./routes/vehicle.routes.js";
 import driverRoutes from "./routes/driver.routes.js";
 import tripRoutes from "./routes/trip.routes.js";
+import serviceLogRoutes from "./routes/serviceLog.routes.js";
+import financeRoutes from "./routes/finance.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
 dotenv.config();
@@ -33,6 +35,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/trips", tripRoutes);
+app.use("/api/service-logs", serviceLogRoutes);
+app.use("/api/finance", financeRoutes);
 
 // Test route
 app.get("/", (req, res) => {
