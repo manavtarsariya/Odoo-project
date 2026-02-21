@@ -79,7 +79,6 @@ export const updateDriverStatus = async (req, res, next) => {
     }
 };
 
-
 // @desc    Update driver safety score
 // @route   PATCH /api/drivers/:driverId/safety-score
 // @access  Private (Safety Officer)

@@ -35,7 +35,7 @@ router
 router
     .route("/:driverId/status")
     .patch(
-        authorize("SAFETY_OFFICER"),
+        authorize("MANAGER", "SAFETY_OFFICER", "DISPATCHER"),
         validate(updateDriverStatusSchema),
         updateDriverStatus
     );
@@ -43,7 +43,7 @@ router
 router
     .route("/:driverId/safety-score")
     .patch(
-        authorize("SAFETY_OFFICER"),
+        authorize("MANAGER", "SAFETY_OFFICER"),
         validate(updateSafetyScoreSchema),
         updateSafetyScore
     );

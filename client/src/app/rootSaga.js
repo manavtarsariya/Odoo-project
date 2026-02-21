@@ -3,6 +3,8 @@ import { all } from "redux-saga/effects";
 import { authSaga } from "../features/auth/authSaga";
 import { vehicleSaga } from "../features/vehicle/vehicleSaga";
 import { driverSaga } from "../features/driver/driverSaga";
+import { tripSaga } from "../features/trip/tripSaga";
+import reportSaga from "../features/report/reportSaga";
 // import { productSaga } from "../features/products/productSaga";
 // import refreshSaga from "../features/refresh/refreshSaga";
 // import syncSaga from "../features/sync/syncSaga";
@@ -12,6 +14,8 @@ export default function* rootSaga() {
         authSaga(),
         vehicleSaga(),
         driverSaga(),
+        tripSaga(),
+        reportSaga(),
         //   wishlistSaga(),
         // productSaga(),
         // refreshSaga(),

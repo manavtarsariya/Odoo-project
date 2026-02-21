@@ -1,9 +1,61 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchDriversRequest, deleteDriverRequest, updateDriverStatusRequest } from "../features/driver/driverSlice";
+import { fetchDriversRequest, deleteDriverRequest, updateDriverStatusRequest, updateSafetyScoreRequest } from "../features/driver/driverSlice";
 import Drivermodal from "../components/driver/Drivermodal";
 
 const STATUS_OPTIONS = ["ON_DUTY", "OFF_DUTY", "SUSPENDED"];
+
+const SafetyScoreCell = ({ driverId, initialValue, onSave, canEdit }) => {
+  const [value, setValue] = useState(initialValue || 0);
+  const [isDirty, setIsDirty] = useState(false);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    setIsDirty(true);
+  };
+
+  const handleSave = () => {
+    onSave(driverId, value);
+    setIsDirty(false);
+  };
+
+  if (!canEdit) {
+    return <span>{initialValue || 0}%</span>;
+  }
+
+  return (
+    <div className="flex items-center gap-2 group">
+      <div className="relative">
+        <input
+          type="number"
+          value={value}
+          min="0"
+          max="100"
+          onChange={handleChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSave();
+          }}
+          className={`w-16 bg-zinc-950 border ${isDirty ? 'border-amber-400' : 'border-zinc-800'} focus:border-amber-400 rounded-lg px-2 py-1 text-center outline-none transition`}
+        />
+        {isDirty && (
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+        )}
+      </div>
+      <span className="text-zinc-500 text-xs">%</span>
+      {isDirty && (
+        <button
+          onClick={handleSave}
+          className="bg-amber-400 text-black p-1 rounded-md hover:bg-amber-300 transition shadow-lg shadow-amber-400/20"
+          title="Save to database"
+        >
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
+};
 
 export default function Driverpage() {
   const dispatch = useDispatch();
@@ -12,7 +64,8 @@ export default function Driverpage() {
   const [showAdd, setShowAdd] = useState(false);
   const [editDriver, setEditDriver] = useState(null);
 
-  const canEditStatus = ["SAFETY_OFFICER", "DISPATCHER"].includes(user?.role);
+  const canEditStatus = ["MANAGER", "SAFETY_OFFICER", "DISPATCHER"].includes(user?.role);
+  const canEditSafetyScore = ["MANAGER", "SAFETY_OFFICER"].includes(user?.role);
 
   useEffect(() => {
     dispatch(fetchDriversRequest());
@@ -30,8 +83,19 @@ export default function Driverpage() {
     dispatch(updateDriverStatusRequest({ id, status }));
   };
 
+  const handleSafetyScoreChange = (id, safetyScore) => {
+    const score = parseInt(safetyScore, 10);
+    if (!isNaN(score) && score >= 0 && score <= 100) {
+      dispatch(updateSafetyScoreRequest({ id, safetyScore: score }));
+    }
+  };
+
+  if (loading && (!drivers || drivers.length === 0)) {
+    return <div className="text-white">Loading drivers...</div>;
+  }
+
   return (
-    <div className="min-h-screen bg-zinc-950 p-8 text-white">
+    <div className="flex flex-col flex-1 w-full text-white">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold tracking-tight">
           Driver List
@@ -63,7 +127,7 @@ export default function Driverpage() {
           </thead>
 
           <tbody>
-            {drivers.length === 0 ? (
+            {!drivers || drivers.length === 0 ? (
               <tr>
                 <td colSpan="6" className="text-center p-6 text-zinc-500">
                   No drivers available
@@ -104,10 +168,13 @@ export default function Driverpage() {
                       : "N/A"}
                   </td>
 
-                  <td className="p-4 font-semibold">
-                    {typeof d.safetyScore === "number"
-                      ? `${d.safetyScore}%`
-                      : "0%"}
+                  <td className="p-4 font-semibold text-white">
+                    <SafetyScoreCell
+                      driverId={d._id}
+                      initialValue={d.safetyScore}
+                      canEdit={canEditSafetyScore}
+                      onSave={handleSafetyScoreChange}
+                    />
                   </td>
 
                   <td className="p-4 text-center space-x-4">

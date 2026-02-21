@@ -24,6 +24,12 @@ export const updateDriverStatus = (id, status) => {
     });
 };
 
+export const updateSafetyScore = (id, safetyScore) => {
+    return axios.patch(`http://localhost:3000/api/drivers/${id}/safety-score`, { safetyScore }, {
+        withCredentials: true,
+    });
+};
+
 export const deleteDriver = (id) => {
     return axios.delete(`http://localhost:3000/api/drivers/${id}`, {
         withCredentials: true,

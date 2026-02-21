@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addVehicleRequest, updateVehicleRequest } from "../../features/vehicle/vehicleSlice";
 import { useEffect } from "react";
 
@@ -58,7 +58,10 @@ const inputCls = (hasError) =>
 
 export default function VehicleModal({ setOpen, initialData }) {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const isEdit = !!initialData;
+
+  const canEditCosts = ["MANAGER", "FINANCE"].includes(user?.role);
 
   const {
     register,
@@ -88,6 +91,7 @@ export default function VehicleModal({ setOpen, initialData }) {
       maxCapacity: Number(data.maxCapacity),   // Number, required
       odometer: Number(data.odometer),      // Number, default 0
       status: data.status,                // Enum, default AVAILABLE
+      acquisitionCost: Number(data.acquisitionCost || 0), // Added for ROI
     };
 
     if (isEdit) {
@@ -255,6 +259,21 @@ export default function VehicleModal({ setOpen, initialData }) {
               </span>
             </div>
           </Field>
+
+          {/* acquisitionCost → Number, required for ROI */}
+          {canEditCosts && (
+            <Field label="Acquisition Cost ($)" error={errors.acquisitionCost?.message}>
+              <input
+                type="number"
+                placeholder="e.g. 50000"
+                {...register("acquisitionCost", {
+                  required: "Acquisition cost is required",
+                  min: { value: 0, message: "Min 0" },
+                })}
+                className={inputCls(errors.acquisitionCost)}
+              />
+            </Field>
+          )}
 
           {/* managerId note */}
           <p className="text-xs text-zinc-600 bg-zinc-800/50 border border-zinc-700/50 rounded-lg px-4 py-2.5">

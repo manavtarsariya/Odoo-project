@@ -20,7 +20,7 @@ const vehicleSchema = new mongoose.Schema(
         licensePlate: {
             type: String,
             required: [true, "Please add a license plate"],
-            unique: true,   
+            unique: true,
             uppercase: true,
             trim: true,
         },
@@ -37,6 +37,11 @@ const vehicleSchema = new mongoose.Schema(
             type: String,
             enum: ["AVAILABLE", "ON_TRIP", "IN_SHOP", "RETIRED"],
             default: "AVAILABLE",
+        },
+        acquisitionCost: {
+            type: Number,
+            required: [true, "Please add acquisition cost"],
+            default: 0,
         },
     },
     {

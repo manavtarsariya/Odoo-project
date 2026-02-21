@@ -12,6 +12,9 @@ import {
     updateDriverStatusRequest,
     updateDriverStatusSuccess,
     updateDriverStatusFailure,
+    updateSafetyScoreRequest,
+    updateSafetyScoreSuccess,
+    updateSafetyScoreFailure,
     deleteDriverRequest,
     deleteDriverSuccess,
     deleteDriverFailure,
@@ -21,6 +24,7 @@ import {
     addDriver,
     updateDriver,
     updateDriverStatus,
+    updateSafetyScore,
     deleteDriver,
 } from "../../api/driver.service";
 import { toast } from "react-hot-toast";
@@ -90,6 +94,23 @@ function* updateDriverStatusWorker(action) {
     }
 }
 
+function* updateSafetyScoreWorker(action) {
+    try {
+        const { id, safetyScore } = action.payload;
+        const res = yield call(updateSafetyScore, id, safetyScore);
+        if (res.data.success) {
+            yield put(updateSafetyScoreSuccess(res.data.data));
+            toast.success("Safety score updated successfully");
+        } else {
+            throw res.data.message || "Failed to update safety score";
+        }
+    } catch (error) {
+        const errorMsg = error?.response?.data?.message || error.message || "Failed to update safety score";
+        yield put(updateSafetyScoreFailure(errorMsg));
+        toast.error(errorMsg);
+    }
+}
+
 function* deleteDriverWorker(action) {
     try {
         const id = action.payload;
@@ -112,5 +133,6 @@ export function* driverSaga() {
     yield takeLatest(addDriverRequest.type, addDriverWorker);
     yield takeLatest(updateDriverRequest.type, updateDriverWorker);
     yield takeLatest(updateDriverStatusRequest.type, updateDriverStatusWorker);
+    yield takeLatest(updateSafetyScoreRequest.type, updateSafetyScoreWorker);
     yield takeLatest(deleteDriverRequest.type, deleteDriverWorker);
 }

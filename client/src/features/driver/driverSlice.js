@@ -62,6 +62,21 @@ const driverSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        updateSafetyScoreRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        updateSafetyScoreSuccess: (state, action) => {
+            state.loading = false;
+            const index = state.drivers.findIndex((d) => d._id === action.payload._id);
+            if (index !== -1) {
+                state.drivers[index].safetyScore = action.payload.safetyScore;
+            }
+        },
+        updateSafetyScoreFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
         deleteDriverRequest: (state) => {
             state.loading = true;
             state.error = null;
@@ -90,6 +105,9 @@ export const {
     updateDriverStatusRequest,
     updateDriverStatusSuccess,
     updateDriverStatusFailure,
+    updateSafetyScoreRequest,
+    updateSafetyScoreSuccess,
+    updateSafetyScoreFailure,
     deleteDriverRequest,
     deleteDriverSuccess,
     deleteDriverFailure,

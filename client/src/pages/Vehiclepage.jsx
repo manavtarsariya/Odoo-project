@@ -1,15 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Sidebar from "../components/layout/SideBar";
-import Footer from "../components/layout/Footer";
-import Vehiclemodal from "../components/vehicle/VehicleModal"
+import Vehiclemodal from "../components/vehicle/VehicleModal";
 import Vehicletable from "../components/vehicle/Vehicletable";
 import { fetchVehiclesRequest, deleteVehicleRequest } from "../features/vehicle/vehicleSlice";
 
 const STATUS_OPTIONS = ["ALL", "AVAILABLE", "ON_TRIP", "IN_SHOP", "RETIRED"];
 
 export default function Vehiclepage() {
-  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const { vehicles, loading } = useSelector((state) => state.vehicle);
   const [editingVehicle, setEditingVehicle] = useState(null);
@@ -28,10 +25,13 @@ export default function Vehiclepage() {
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteVehicleRequest(id));
+    if (window.confirm("Are you sure you want to delete this vehicle?")) {
+      dispatch(deleteVehicleRequest(id));
+    }
   };
 
   const filteredVehicles = useMemo(() => {
+    if (!vehicles) return [];
     return vehicles.filter((v) => {
       const matchSearch =
         v.model.toLowerCase().includes(search.toLowerCase()) ||
@@ -44,68 +44,58 @@ export default function Vehiclepage() {
     });
   }, [vehicles, search, statusFilter]);
 
+  if (loading && (!vehicles || vehicles.length === 0)) {
+    return <div className="text-white">Loading vehicles...</div>;
+  }
+
   return (
-    <div className="flex bg-zinc-950 min-h-screen">
+    <div className="flex flex-col flex-1 w-full">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-black text-white">
+          Vehicle Registry
+        </h1>
 
-    
-
-      {/* Main Section */}
-      <div className="flex flex-col flex-1 w-full">
-
-        {/* Page Content */}
-        <main className="flex-1 p-8 overflow-auto">
-
-          {/* Header */}
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-black text-white">
-              Vehicle Registry
-            </h1>
-
-            <button
-              onClick={() => {
-                setEditingVehicle(null);
-                setOpen(true);
-              }}
-              className="bg-amber-400 hover:bg-amber-300 text-zinc-900 font-bold px-5 py-2 rounded-xl transition-all"
-            >
-              + Add Vehicle
-            </button>
-          </div>
-
-          {/* Search + Filter */}
-          <div className="flex gap-4 mb-6">
-            <input
-              type="text"
-              placeholder="Search by model or plate..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2 text-white focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none"
-            />
-
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2 text-white focus:border-amber-400 outline-none"
-            >
-              {STATUS_OPTIONS.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Table */}
-          <Vehicletable
-            vehicles={filteredVehicles}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-
-        </main>
-
-       
+        <button
+          onClick={() => {
+            setEditingVehicle(null);
+            setOpen(true);
+          }}
+          className="bg-amber-400 hover:bg-amber-300 text-zinc-900 font-bold px-5 py-2 rounded-xl transition-all"
+        >
+          + Add Vehicle
+        </button>
       </div>
+
+      {/* Search + Filter */}
+      <div className="flex gap-4 mb-6">
+        <input
+          type="text"
+          placeholder="Search by model or plate..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2 text-white focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none"
+        />
+
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2 text-white focus:border-amber-400 outline-none"
+        >
+          {STATUS_OPTIONS.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Table */}
+      <Vehicletable
+        vehicles={filteredVehicles}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
       {/* Modal */}
       {open && (

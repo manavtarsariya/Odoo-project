@@ -8,6 +8,8 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
 import vehicleRoutes from "./routes/vehicle.routes.js";
 import driverRoutes from "./routes/driver.routes.js";
+import tripRoutes from "./routes/trip.routes.js";
+import reportRoutes from "./routes/report.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
 dotenv.config();
@@ -31,6 +33,8 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
+app.use("/api/trips", tripRoutes);
+app.use("/api/reports", reportRoutes);
 
 // Test route
 app.get("/", (req, res) => {

@@ -17,7 +17,7 @@ router.use(protect);
 
 router
     .route("/")
-    .get(authorize("MANAGER"), getVehicles)
+    .get(authorize("MANAGER", "DISPATCHER"), getVehicles)
     .post(authorize("MANAGER"), validate(createVehicleSchema), createVehicle);
 
 router
