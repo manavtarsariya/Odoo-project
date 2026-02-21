@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRequest } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 /* ── tiny SVG icons ── */
 const IconTruck = () => (
@@ -62,6 +65,9 @@ const ROLES = [
 export default function Loginpage() {
   const [showPw, setShowPw] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const {error,loading} = useSelector(store => store.auth)
 
   const {
     register,
@@ -70,9 +76,16 @@ export default function Loginpage() {
   } = useForm({ mode: "onTouched" });
 
   const onSubmit = async (data) => {
+
+    dispatch(loginRequest(data))
     await new Promise((r) => setTimeout(r, 1200));
     console.log("Login payload:", data);
-    setSubmitted(true);
+
+    if(!loading && !error){
+      setSubmitted(true);
+      navigate("/")
+
+    }
   };
 
   return (
