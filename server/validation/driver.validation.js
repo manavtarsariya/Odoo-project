@@ -21,3 +21,7 @@ export const updateDriverSchema = z.object({
 export const updateDriverStatusSchema = z.object({
     status: z.enum(["ON_DUTY", "OFF_DUTY", "SUSPENDED"]),
 });
+
+export const updateSafetyScoreSchema = z.object({
+    safetyScore: z.number().min(0, "Safety score cannot be less than 0").max(100, "Safety score cannot exceed 100"),
+});

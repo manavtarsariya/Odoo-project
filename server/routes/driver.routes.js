@@ -5,6 +5,7 @@ import {
     getDriver,
     updateDriver,
     updateDriverStatus,
+    updateSafetyScore,
     deleteDriver,
 } from "../controllers/driver.controller.js";
 import { protect, authorize } from "../middlewares/auth.middleware.js";
@@ -13,6 +14,7 @@ import {
     createDriverSchema,
     updateDriverSchema,
     updateDriverStatusSchema,
+    updateSafetyScoreSchema,
 } from "../validation/driver.validation.js";
 
 const router = express.Router();
@@ -36,6 +38,14 @@ router
         authorize("MANAGER", "SAFETY_OFFICER"),
         validate(updateDriverStatusSchema),
         updateDriverStatus
+    );
+
+router
+    .route("/:driverId/safety-score")
+    .patch(
+        authorize("SAFETY_OFFICER"),
+        validate(updateSafetyScoreSchema),
+        updateSafetyScore
     );
 
 export default router;
