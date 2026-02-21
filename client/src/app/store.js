@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 
 import authReducer from "../features/auth/authSlice";
 import vehicleReducer from "../features/vehicle/vehicleSlice";
+import driverReducer from "../features/driver/driverSlice";
 import storage from "redux-persist/lib/storage";
 // import productReducer from "../features/products/productSlice";
 // import wishlistReducer from "../features/wishlist/wishlistSlice";
@@ -31,6 +32,7 @@ const sagaMiddleware = createSagaMiddleware();
 const rootReducer = combineReducers({
   auth: authReducer,
   vehicle: vehicleReducer,
+  driver: driverReducer,
   //   products: productReducer,
   //   wishlist: wishlistReducer,
   //   refresh: refreshReducer,

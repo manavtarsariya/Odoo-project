@@ -36,6 +36,8 @@ export const getDriverById = async (id) => {
     return driver;
 };
 
+
+
 /**
  * Update driver
  * @param {string} id 
