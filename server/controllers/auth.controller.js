@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import * as authService from "../services/auth.service.js";
 import sendResponse from "../utils/sendResponse.js";
 
-// Get token from model, create cookie and send response
+// Get token from model, create cookie and send response 
 const sendTokenResponse = (user, statusCode, res) => {
     // Create token
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
