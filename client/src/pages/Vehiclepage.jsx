@@ -1,14 +1,12 @@
-import { useState, useMemo } from "react";
-import Sidebar from "../components/layout/SideBar";
-import Footer from "../components/layout/Footer";
+
+import{ useState, useMemo } from "react";
 import Vehiclemodal from "../components/vehicle/VehicleModal"
 import Vehicletable from "../components/vehicle/Vehicletable";
 
 const STATUS_OPTIONS = ["ALL", "AVAILABLE", "ON_TRIP", "IN_SHOP", "RETIRED"];
 
 export default function Vehiclepage() {
-  const [isOpen, setIsOpen] = useState(false);
-
+ 
   const [vehicles, setVehicles] = useState([
     {
       _id: "1",
@@ -42,8 +40,7 @@ export default function Vehiclepage() {
   return (
     <div className="flex bg-zinc-950 min-h-screen">
 
-      {/* Sidebar */}
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+    
 
       {/* Main Section */}
       <div className="flex flex-col flex-1 w-full">
@@ -93,8 +90,7 @@ export default function Vehiclepage() {
           
         </main>
 
-        {/* Footer */}
-        <Footer />
+       
       </div>
 
       {/* Modal */}

@@ -6,6 +6,7 @@ import {
   Receipt,
   ShieldCheck,
   BarChart3,
+  MagnetIcon,
   X
 } from "lucide-react";
 
@@ -14,6 +15,7 @@ import { NavLink } from "react-router-dom";
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, path: "/" },
   { name: "Vehicle Registry", icon: Truck, path: "/vehicles" },
+   { name: "Driver", icon: MagnetIcon, path: "/drivers" },
   { name: "Trip Dispatcher", icon: Route, path: "/trips" },
   { name: "Maintenance", icon: Wrench, path: "/maintenance" },
   { name: "Trip & Expense", icon: Receipt, path: "/expenses" },
