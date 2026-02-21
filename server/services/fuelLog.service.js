@@ -20,6 +20,7 @@ export const createFuelLog = async (fuelData) => {
     // 3. Create a corresponding expense entry
     await Expense.create({
         vehicleId: fuelLog.vehicleId,
+        financeAdderId: fuelLog.financerId,
         type: "FUEL",
         amount: fuelLog.cost,
         referenceId: fuelLog._id,
