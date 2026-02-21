@@ -7,6 +7,7 @@ import RegisterPage from "../pages/Registerpage";
 import Loginpage from "../pages/Loginpage";
 import Vehiclepage from "../pages/Vehiclepage";
 import Driverpage from "../pages/Driverpage";
+import TripDispatchPage from "../pages/Tripdispatch";
 
 const AppRoutes = createBrowserRouter([
   
@@ -35,6 +36,10 @@ const AppRoutes = createBrowserRouter([
         {
         path: "/drivers",
         element: <Driverpage />,
+      },
+         {
+        path: "/trips",
+        element: <TripDispatchPage />,
       },
     ],
   },

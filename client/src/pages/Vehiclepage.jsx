@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
-import Sidebar from "../components/layout/SideBar";
-import Footer from "../components/layout/Footer";
+
 import Vehiclemodal from "../components/vehicle/VehicleModal"
 import Vehicletable from "../components/vehicle/Vehicletable";
 import { fetchVehiclesRequest, deleteVehicleRequest } from "../features/vehicle/vehicleSlice";
