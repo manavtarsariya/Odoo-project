@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { registerRequest } from "../features/auth/authSlice";
 
 /* ── SVG Icons ── */
 const IconTruck = () => (
@@ -68,7 +70,7 @@ const strengthConfig = [
   { label: "Strong", bar: "w-full", color: "bg-emerald-500", text: "text-emerald-400" },
 ];
 
-const ROLES = ["Manager", "Dispatcher", "Safety Officer", "Financial Analyst"];
+const ROLES = ["MANAGER", "DISPATCHER", "SAFETY_OFFICER", "FINANCE"];
 
 const ROLE_INFO = [
   { role: "Manager",           desc: "Full fleet & lifecycle control",   dot: "bg-amber-400" },
@@ -82,6 +84,9 @@ export default function RegisterPage() {
   const [showCPw, setShowCPw] = useState(false);
   const [done, setDone]       = useState(false);
 
+
+  const dispatch = useDispatch()
+
   const {
     register,
     handleSubmit,
@@ -94,10 +99,13 @@ export default function RegisterPage() {
   const sc       = strengthConfig[strength - 1];
 
   const onSubmit = async (data) => {
-    await new Promise((r) => setTimeout(r, 1400));
-    const userId = Math.random().toString(36).substr(2, 9).toUpperCase();
-    console.log("Register payload:", { userId, ...data });
-    setDone(true);
+    const { confirmPassword,terms, ...filteredData } = data;
+    console.log(filteredData)
+    dispatch(registerRequest(filteredData))
+    // await new Promise((r) => setTimeout(r, 1400));
+    // const userId = Math.random().toString(36).substr(2, 9).toUpperCase();
+    // console.log("Register payload:", { userId, ...data });
+    // setDone(true);
   };
 
   /* ── FIELD CLASSES ── */
