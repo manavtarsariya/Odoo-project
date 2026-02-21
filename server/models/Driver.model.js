@@ -24,7 +24,7 @@ const driverSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["ON_DUTY", "OFF_DUTY", "SUSPENDED"],
+            enum: ["ON_DUTY", "OFF_DUTY", "SUSPENDED", "ON_TRIP"],
             default: "OFF_DUTY",
         },
         category: {

@@ -1,4 +1,5 @@
 import User from "../models/User.model.js";
+import crypto from "crypto";
 
 /**
  * Create a new user
@@ -59,5 +60,56 @@ export const getUserById = async (id) => {
     if (!user) {
         throw new Error("User not found");
     }
+    return user;
+};
+
+/**
+ * Generate reset token for forgot password
+ * @param {string} email 
+ * @returns {Promise<string>} reset token
+ */
+export const forgotPassword = async (email) => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new Error("User with this email not found");
+    }
+
+    // Get reset token
+    const resetToken = user.getResetPasswordToken();
+
+    await user.save({ validateBeforeSave: false });
+
+    return resetToken;
+};
+
+/**
+ * Reset password using token
+ * @param {string} resetToken 
+ * @param {string} password 
+ * @returns {Promise<User>}
+ */
+export const resetPassword = async (resetToken, password) => {
+    // Get hashed token
+    const resetPasswordToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+
+    const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+        throw new Error("Invalid or expired token");
+    }
+
+    // Set new password
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
     return user;
 };

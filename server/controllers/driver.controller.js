@@ -79,7 +79,6 @@ export const updateDriverStatus = async (req, res, next) => {
     }
 };
 
-
 // @desc    Update driver safety score
 // @route   PATCH /api/drivers/:driverId/safety-score
 // @access  Private (Safety Officer)
@@ -95,6 +94,7 @@ export const updateSafetyScore = async (req, res, next) => {
         next(err);
     }
 };
+
 // @desc    Delete driver
 // @route   DELETE /api/drivers/:driverId
 // @access  Private/Manager
