@@ -1,30 +1,35 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../components/layout/SideBar";
 import Footer from "../components/layout/Footer";
 import Vehiclemodal from "../components/vehicle/VehicleModal"
 import Vehicletable from "../components/vehicle/Vehicletable";
+import { fetchVehiclesRequest, deleteVehicleRequest } from "../features/vehicle/vehicleSlice";
 
 const STATUS_OPTIONS = ["ALL", "AVAILABLE", "ON_TRIP", "IN_SHOP", "RETIRED"];
 
 export default function Vehiclepage() {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { vehicles, loading } = useSelector((state) => state.vehicle);
+  const [editingVehicle, setEditingVehicle] = useState(null);
 
-  const [vehicles, setVehicles] = useState([
-    {
-      _id: "1",
-      managerId: "John Doe",
-      model: "Volvo FH16",
-      licensePlate: "AP09AB1234",
-      maxCapacity: 20000,
-      odometer: 125000,
-      status: "AVAILABLE",
-      createdAt: "2026-02-01",
-    },
-  ]);
+  useEffect(() => {
+    dispatch(fetchVehiclesRequest());
+  }, [dispatch]);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [open, setOpen] = useState(false);
+
+  const handleEdit = (vehicle) => {
+    setEditingVehicle(vehicle);
+    setOpen(true);
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteVehicleRequest(id));
+  };
 
   const filteredVehicles = useMemo(() => {
     return vehicles.filter((v) => {
@@ -58,7 +63,10 @@ export default function Vehiclepage() {
             </h1>
 
             <button
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                setEditingVehicle(null);
+                setOpen(true);
+              }}
               className="bg-amber-400 hover:bg-amber-300 text-zinc-900 font-bold px-5 py-2 rounded-xl transition-all"
             >
               + Add Vehicle
@@ -89,8 +97,12 @@ export default function Vehiclepage() {
           </div>
 
           {/* Table */}
-            <Vehicletable vehicles={filteredVehicles} />
-          
+          <Vehicletable
+            vehicles={filteredVehicles}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+
         </main>
 
         {/* Footer */}
@@ -101,9 +113,7 @@ export default function Vehiclepage() {
       {open && (
         <Vehiclemodal
           setOpen={setOpen}
-          addVehicle={(vehicle) =>
-            setVehicles((prev) => [...prev, vehicle])
-          }
+          initialData={editingVehicle}
         />
       )}
     </div>

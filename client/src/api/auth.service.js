@@ -12,8 +12,13 @@ export const verifyUser = (data) => {
 };
 
 export const loginUser = (data) => {
-    // console.log(data,"i")
-  return axios.post("http://localhost:3000/api/auth/login", data);
+  return axios.post(
+    "http://localhost:3000/api/auth/login",
+    data,
+    {
+      withCredentials: true, // 🔥 important for cookies
+    }
+  );
 };
 
 export const logoutUser = (data) => {

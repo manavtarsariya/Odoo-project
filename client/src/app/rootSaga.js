@@ -1,6 +1,7 @@
 import { all } from "redux-saga/effects";
 // import { wishlistSaga } from "../features/wishlist/wishlistSaga";
 import { authSaga } from "../features/auth/authSaga";
+import { vehicleSaga } from "../features/vehicle/vehicleSaga";
 // import { productSaga } from "../features/products/productSaga";
 // import refreshSaga from "../features/refresh/refreshSaga";
 // import syncSaga from "../features/sync/syncSaga";
@@ -8,6 +9,7 @@ import { authSaga } from "../features/auth/authSaga";
 export default function* rootSaga() {
     yield all([
         authSaga(),
+        vehicleSaga(),
         //   wishlistSaga(),
         // productSaga(),
         // refreshSaga(),
