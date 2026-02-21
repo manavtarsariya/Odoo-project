@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { registerRequest } from "../features/auth/authSlice";
 
+
 /* ── SVG Icons ── */
 const IconTruck = () => (
   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -117,6 +118,7 @@ export default function RegisterPage() {
     } rounded-xl py-3.5 text-sm text-white placeholder-zinc-600 outline-none focus:ring-4 transition-all duration-200`;
 
   return (
+    <>
     <div className="min-h-screen flex bg-zinc-950 font-sans">
 
       {/* ──────── LEFT PANEL ──────── */}
@@ -472,6 +474,9 @@ export default function RegisterPage() {
           )}
         </div>
       </div>
+      
     </div>
+    
+    </>
   );
 }
