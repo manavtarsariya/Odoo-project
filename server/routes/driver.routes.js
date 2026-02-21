@@ -23,19 +23,19 @@ router.use(protect);
 
 router
     .route("/")
-    .get(authorize("MANAGER", "SAFETY_OFFICER"), getDrivers)
+    .get(authorize("MANAGER", "SAFETY_OFFICER", "DISPATCHER"), getDrivers)
     .post(authorize("MANAGER"), validate(createDriverSchema), createDriver);
 
 router
     .route("/:driverId")
-    .get(authorize("MANAGER", "SAFETY_OFFICER"), getDriver)
+    .get(authorize("MANAGER", "SAFETY_OFFICER", "DISPATCHER"), getDriver)
     .put(authorize("MANAGER"), validate(updateDriverSchema), updateDriver)
     .delete(authorize("MANAGER"), deleteDriver);
 
 router
     .route("/:driverId/status")
     .patch(
-        authorize("MANAGER", "SAFETY_OFFICER"),
+        authorize("SAFETY_OFFICER"),
         validate(updateDriverStatusSchema),
         updateDriverStatus
     );
