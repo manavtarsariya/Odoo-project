@@ -7,6 +7,11 @@ const fuelLogSchema = new mongoose.Schema(
             ref: "Vehicle",
             required: [true, "Fuel log must be linked to a vehicle"],
         },
+        financerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: [true, "Financer ID is required"],
+        },
         liters: {
             type: Number,
             required: [true, "Please add the number of liters"],

@@ -7,6 +7,11 @@ const expenseSchema = new mongoose.Schema(
             ref: "Vehicle",
             required: [true, "Expense must be linked to a vehicle"],
         },
+        financeAdderId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: [true, "User who added the expense is required"],
+        },
         type: {
             type: String,
             enum: ["FUEL", "MAINTENANCE"],

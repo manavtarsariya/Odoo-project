@@ -5,9 +5,13 @@ import sendResponse from "../utils/sendResponse.js";
 // @desc    Create new fuel log
 // @route   POST /api/finance/fuel
 // @access  Private/Manager
-export const createFuelLog = async (req, res, next) => {    
+export const createFuelLog = async (req, res, next) => {
     try {
-        const fuelLog = await fuelLogService.createFuelLog(req.body);
+        const fuelData = {
+            ...req.body,
+            financerId: req.user.id
+        };
+        const fuelLog = await fuelLogService.createFuelLog(fuelData);
         return sendResponse(res, 201, true, "Fuel log created and expense recorded", fuelLog);
     } catch (err) {
         if (err.message === "Vehicle not found") {

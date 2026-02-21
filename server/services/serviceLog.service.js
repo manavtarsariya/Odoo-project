@@ -29,6 +29,7 @@ export const createServiceLog = async (logData) => {
     // 4. Create a corresponding expense entry
     await Expense.create({
         vehicleId: serviceLog.vehicleId,
+        financeAdderId: logData.managerId,
         type: "MAINTENANCE",
         amount: serviceLog.cost,
         referenceId: serviceLog._id,
