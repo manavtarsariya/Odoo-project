@@ -87,3 +87,38 @@ export const logout = async (req, res, next) => {
 
     return sendResponse(res, 200, true, "User logged out successfully");
 };
+
+// @desc    Forgot password
+// @route   POST /api/auth/forgotpassword
+// @access  Public
+export const forgotPassword = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        const resetToken = await authService.forgotPassword(email);
+
+        // In a real app, send email here. For now, we'll return the token for testing.
+        return sendResponse(res, 200, true, "Password reset token generated", { resetToken });
+    } catch (err) {
+        if (err.message === "User with this email not found") {
+            return sendResponse(res, 404, false, err.message);
+        }
+        next(err);
+    }
+};
+
+// @desc    Reset password
+// @route   PUT /api/auth/resetpassword/:resettoken
+// @access  Public
+export const resetPassword = async (req, res, next) => {
+    try {
+        const { password } = req.body;
+        const user = await authService.resetPassword(req.params.resettoken, password);
+
+        return sendResponse(res, 200, true, "Password reset successful", user);
+    } catch (err) {
+        if (err.message === "Invalid or expired token") {
+            return sendResponse(res, 400, false, err.message);
+        }
+        next(err);
+    }
+};

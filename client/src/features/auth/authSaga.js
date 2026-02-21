@@ -1,5 +1,5 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { loginRequest, loginSuccess, loginFailure, registerRequest } from "./authSlice";
+import { loginRequest, loginSuccess, loginFailure, registerRequest, registerSuccess, registerFailure } from "./authSlice";
 import { toast } from "react-hot-toast"
 import { loginUser } from "../../api/auth.service";
 import { registerUser } from "../../api/auth.service";
@@ -37,33 +37,18 @@ function* loginWorker(action) {
 
 
 function* registerWorker(action) {
-
-
-
     try {
-
-        // Call your backend API
-        console.log(action.payload, "registerworker")
         const res = yield call(registerUser, action.payload);
-
-        // Assuming backend returns { success: true, data: { user info } }
-        console.log(res.data)
         if (res.data.success) {
-
-            yield put(loginSuccess(res.data.data.user));
-            toast.success("Login successful");
-
+            yield put(registerSuccess(res.data.data.user));
+            toast.success("Registration successful");
         } else {
-            throw res.data.message || "Login failed";
+            throw res.data.message || "Registration failed";
         }
     } catch (error) {
-
-        console.log(error)
-
-        const errorMsg = error?.response?.data?.message || error.message || "Login Failed";
-        yield put(loginFailure(errorMsg));
+        const errorMsg = error?.response?.data?.message || error.message || "Registration Failed";
+        yield put(registerFailure(errorMsg));
         toast.error(errorMsg);
-
     }
 }
 
