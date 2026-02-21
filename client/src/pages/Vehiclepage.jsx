@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import Sidebar from "../components/layout/SideBar";
 import Footer from "../components/layout/Footer";
-import Vehiclemodal from "../components/vehicle/Vehiclemodal"
+import Vehiclemodal from "../components/vehicle/VehicleModal"
 import Vehicletable from "../components/vehicle/Vehicletable";
 
 const STATUS_OPTIONS = ["ALL", "AVAILABLE", "ON_TRIP", "IN_SHOP", "RETIRED"];
