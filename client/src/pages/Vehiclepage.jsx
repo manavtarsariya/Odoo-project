@@ -47,8 +47,7 @@ export default function Vehiclepage() {
   return (
     <div className="flex bg-zinc-950 min-h-screen">
 
-      {/* Sidebar */}
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+    
 
       {/* Main Section */}
       <div className="flex flex-col flex-1 w-full">
@@ -105,8 +104,7 @@ export default function Vehiclepage() {
 
         </main>
 
-        {/* Footer */}
-        <Footer />
+       
       </div>
 
       {/* Modal */}

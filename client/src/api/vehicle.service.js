@@ -30,5 +30,9 @@ export const updateVehicle = (id, vehicleData) => {
 };
 
 export const deleteVehicle = (id) => {
-  return axios.delete(`http://localhost:3000/api/vehicles/${id}`);
+  return axios.delete(`http://localhost:3000/api/vehicles/${id}`,
+     {
+      withCredentials: true, // 🔥 sends cookie automatically
+    }
+  );
 };

@@ -79,6 +79,22 @@ export const updateDriverStatus = async (req, res, next) => {
     }
 };
 
+
+// @desc    Update driver safety score
+// @route   PATCH /api/drivers/:driverId/safety-score
+// @access  Private (Safety Officer)
+export const updateSafetyScore = async (req, res, next) => {
+    try {
+        const { safetyScore } = req.body;
+        const driver = await driverService.updateDriver(req.params.driverId, { safetyScore });
+        return sendResponse(res, 200, true, "Driver safety score updated successfully", driver);
+    } catch (err) {
+        if (err.message === "Driver not found") {
+            return sendResponse(res, 404, false, err.message);
+        }
+        next(err);
+    }
+};
 // @desc    Delete driver
 // @route   DELETE /api/drivers/:driverId
 // @access  Private/Manager
