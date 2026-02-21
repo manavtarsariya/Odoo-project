@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 
 import authReducer from "../features/auth/authSlice";
+import vehicleReducer from "../features/vehicle/vehicleSlice";
 import storage from "redux-persist/lib/storage";
 // import productReducer from "../features/products/productSlice";
 // import wishlistReducer from "../features/wishlist/wishlistSlice";
@@ -29,10 +30,11 @@ const sagaMiddleware = createSagaMiddleware();
 // 2️⃣ Root reducer
 const rootReducer = combineReducers({
   auth: authReducer,
-//   products: productReducer,
-//   wishlist: wishlistReducer,
-//   refresh: refreshReducer,
-//   sync: syncReducer, 
+  vehicle: vehicleReducer,
+  //   products: productReducer,
+  //   wishlist: wishlistReducer,
+  //   refresh: refreshReducer,
+  //   sync: syncReducer, 
 });
 
 // 3️⃣ Persist config
